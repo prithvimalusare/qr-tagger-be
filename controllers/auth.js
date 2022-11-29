@@ -1,7 +1,7 @@
 let authControllers = {};
 
-authControllers.getAuth = (req, res, next)=>{
-    res.send('reached route');
+authControllers.register = (req, res, next)=>{
+    res.send('Register route reached');
 }
 
 module.exports = authControllers;
