@@ -1,4 +1,7 @@
 'use strict';
+
+let crypto = require('crypto');
+
 const {
   Model
 } = require('sequelize');
@@ -31,7 +34,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING(100),
-      allowNull: false
+      allowNull: false,
+      set(value){
+        this.setDataValue('password', crypto.pbkdf2Sync(value, process.env.SALT || 'Pass_$@!+', 
+          1000, 64, `sha512`).toString(`hex`) )
+      }
     }
   }, {
     sequelize,

@@ -1,4 +1,4 @@
-require('../../dev-dep');
+require('../../helper/dev-dep');
 
 module.exports = {
   "development": {
