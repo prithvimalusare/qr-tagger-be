@@ -37,4 +37,16 @@ registerValidaiton = (req, res, next)=>{
     
 } 
 
-module.exports = {registerValidaiton};
+loginValidaiton = (req, res, next)=>{
+
+    if (!req.body.email || validator.isEmpty(req.body.email)){
+        sendError(req, res, next, 'email', 'und_empt')
+    }else if (!req.body.password || validator.isEmpty(req.body.password)) {
+        sendError(req, res, next, 'password', 'und_empt')
+    }else{
+        next();
+    }
+    
+} 
+
+module.exports = {registerValidaiton, loginValidaiton};

@@ -2,6 +2,8 @@
 
 let crypto = require('crypto');
 
+const SALT = process.env.SALT || 'Pass_$@!+' ;
+
 const {
   Model
 } = require('sequelize');
@@ -36,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: false,
       set(value){
-        this.setDataValue('password', crypto.pbkdf2Sync(value, process.env.SALT || 'Pass_$@!+', 
+        this.setDataValue('password', crypto.pbkdf2Sync(value, SALT, 
           1000, 64, `sha512`).toString(`hex`) )
       }
     }
@@ -51,5 +53,9 @@ module.exports = (sequelize, DataTypes) => {
   },{
     sequelize
   });
+  User.validatePassword = (encryptedPassword, password)=>{
+    return crypto.pbkdf2Sync(password, SALT, 
+          1000, 64, `sha512`).toString(`hex`) === encryptedPassword
+  }
   return User;
 };

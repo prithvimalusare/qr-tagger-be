@@ -25,4 +25,18 @@ authControllers.register = async (req, res, next) => {
     });
 }
 
+authControllers.login = async (req, res, next) => {
+    let { email, password} = req.body;
+    
+    let user = await User.findOne({where: {email}});
+    
+    if(!user){
+        res.status(404).json({error:`No user with email:${email} found.`})
+    }else if(!User.validatePassword(user.password, password)){
+        res.status(401).json({error:`Invlaid password`})
+    }else {
+        res.status(200).json({user: user});
+    }
+}
+
 module.exports = authControllers;
