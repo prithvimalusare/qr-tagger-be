@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+    validatePassword(password){
+      return encryptPassword(password) === this.password
+    }
   }
   User.init({
     user_uid: {
@@ -38,8 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: false,
       set(value){
-        this.setDataValue('password', crypto.pbkdf2Sync(value, SALT, 
-          1000, 64, `sha512`).toString(`hex`) )
+        this.setDataValue('password', encryptPassword(value)  )
       }
     }
   }, {
@@ -53,9 +55,10 @@ module.exports = (sequelize, DataTypes) => {
   },{
     sequelize
   });
-  User.validatePassword = (encryptedPassword, password)=>{
-    return crypto.pbkdf2Sync(password, SALT, 
-          1000, 64, `sha512`).toString(`hex`) === encryptedPassword
-  }
+  
   return User;
 };
+
+const encryptPassword = (password) =>{
+  return crypto.pbkdf2Sync(password, SALT, 1000, 64, `sha512`).toString(`hex`)
+}
