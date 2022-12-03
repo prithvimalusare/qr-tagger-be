@@ -19,7 +19,7 @@ app.use((err, req, res, next)=>{
   console.error(err)
   console.error(' ------------------------ unhandled error end ------------------------ ')
   res.status(500)
-  res.json({ error: err })
+  res.json({ error: new String(err) || 'Internal server error, please check error logs.' })
 })
 
 

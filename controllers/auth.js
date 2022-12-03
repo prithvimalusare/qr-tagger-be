@@ -1,9 +1,9 @@
-let {User} = require('../database/models')
+let { User } = require('../database/models')
 
 let authControllers = {};
 
-authControllers.register = async (req, res, next)=>{
-    let {email, password, full_name} = req.body;
+authControllers.register = async (req, res, next) => {
+    let { email, password, full_name } = req.body;
     let createdUser;
 
     try {
@@ -15,8 +15,14 @@ authControllers.register = async (req, res, next)=>{
     } catch (error) {
         next(error);
     }
-    
-    if(createdUser) res.status(201).send('User registration successfull');
+
+    if (createdUser) res.status(201).json({
+        'message': 'User created successfully',
+        'User': {
+            email: createdUser.email,
+            full_name: createdUser.full_name
+        }
+    });
 }
 
 module.exports = authControllers;

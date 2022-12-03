@@ -2,7 +2,7 @@ const { ValidationError } = require('sequelize');
 const validator  = require('validator');
 
 const error_messages = {
-    'empty': ' is empty',
+    'und_empt': ' is undefined or empty',
     'invalid': ' is invalid',
     'password': ' must contain a number alphabet and special character',
     'pass_min_len': ' must be atleast 5 characters long',
@@ -16,12 +16,12 @@ function sendError (req, res, next, field, error_type) {
 
 registerValidaiton = (req, res, next)=>{
 
-    if (validator.isEmpty(req.body.email)){
-        sendError(req, res, next, 'email', 'empty')
-    }else if (validator.isEmpty(req.body.password)) {
-        sendError(req, res, next, 'password', 'empty')
-    }else if (validator.isEmpty(req.body.full_name)) {
-        sendError(req, res, next, 'full_name', 'emtpy')
+    if (!req.body.email || validator.isEmpty(req.body.email)){
+        sendError(req, res, next, 'email', 'und_empt')
+    }else if (!req.body.password || validator.isEmpty(req.body.password)) {
+        sendError(req, res, next, 'password', 'und_empt')
+    }else if (!req.body.full_name || validator.isEmpty(req.body.full_name)) {
+        sendError(req, res, next, 'full_name', 'und_empt')
     }else if (!validator.isEmail(req.body.email)) {
         sendError(req, res, next, 'email', 'invalid')
     }else if (!validator.isLength(req.body.password ,{min:8})){
