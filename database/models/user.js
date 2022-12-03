@@ -2,7 +2,7 @@
 
 let crypto = require('crypto');
 
-const SALT = process.env.SALT || 'Pass_$@!+' ;
+const { SALT } = require('../../envVars') ;
 
 const {
   Model

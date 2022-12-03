@@ -32,7 +32,7 @@ authControllers.login = async (req, res, next) => {
     if(!user){
         res.status(404).json({error:`No user with email:${email} found.`})
     }else if(!user.validatePassword(password)){
-        res.status(401).json({error:`Invlaid password`})
+        res.status(401).json({error:`Invalid password`})
     }else {
         res.status(200).json({user: user});
     }
