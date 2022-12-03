@@ -2,6 +2,8 @@
 
 let crypto = require('crypto');
 
+const { SALT } = require('../../envVars') ;
+
 const {
   Model
 } = require('sequelize');
@@ -14,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+    }
+    validatePassword(password){
+      return encryptPassword(password) === this.password
     }
   }
   User.init({
@@ -36,8 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: false,
       set(value){
-        this.setDataValue('password', crypto.pbkdf2Sync(value, process.env.SALT || 'Pass_$@!+', 
-          1000, 64, `sha512`).toString(`hex`) )
+        this.setDataValue('password', encryptPassword(value)  )
       }
     }
   }, {
@@ -51,5 +55,10 @@ module.exports = (sequelize, DataTypes) => {
   },{
     sequelize
   });
+  
   return User;
 };
+
+const encryptPassword = (password) =>{
+  return crypto.pbkdf2Sync(password, SALT, 1000, 64, `sha512`).toString(`hex`)
+}
