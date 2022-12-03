@@ -14,4 +14,6 @@ module.exports  = {
     'DB_DATABASE' : process.env['DB_DATABASE'] || 'db',
     'DB_HOST' : process.env['DB_HOST'] || '127.0.0.1',
     'DB_DIALECT' : process.env['DB_DIALECT'] || 'postgres',
+    'ACCESS_TOKEN_SECRET':process.env['ACCESS_TOKEN_SECRET'] || 'ACCESS_TOKEN_SECRET',
+    'ACCESS_TOKEN_EXPIRY':process.env['ACCESS_TOKEN_EXPIRY'] || '1h'
 }

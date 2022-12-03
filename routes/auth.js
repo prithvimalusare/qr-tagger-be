@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const {authControllers} = require('../controllers');
-const {registerValidaiton} = require('../helper/validationMiddleware')
+const {registerValidaiton} = require('../middlewares/validation')
 
 router.post('/register', registerValidaiton, authControllers.register)
 
