@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Tag,{foreignKey:'user_uid'})
     }
     validatePassword(password){
       return encryptPassword(password) === this.password
