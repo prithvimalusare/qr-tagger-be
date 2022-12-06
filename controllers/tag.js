@@ -25,12 +25,51 @@ tagController.create = async (req, res, next) => {
 
 }
 
+tagController.update = async (req, res, next) => {
+    let tag = null;
+    try {
+        tag = await Tag.findOne({
+            where: {
+                tag_uid: req.params.tag_uid,
+                user_uid: req.user.user_uid
+            },
+            attributes: ['tag_uid']
+        });
+        if (tag) {
+            tag = await Tag.update(
+                { name: req.body.name },
+                { where: {
+                        tag_uid: req.params.tag_uid,
+                        user_uid: req.user.user_uid
+                    },
+                  returning: true
+                }
+            );
+            tag = tag ? tag[1] ? tag[1][0] : null : null;
+            res.status(200).json({
+                'message': 'Tag updated',
+                'Tag': {
+                    "tag_uid": tag.tag_uid,
+                    "name": tag.name,
+                }
+            })
+        }
+        else {
+            res.status(404).json({
+                'message': 'Invalid tag_uid'
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
 tagController.getAll = async (req, res, next) => {
     let all_tags = [];
     try {
-        all_tags = await Tag.findAll({ 
-            where: { user_uid: req.user.user_uid }, 
-            attributes: ['tag_uid', 'name', 'user_uid'] 
+        all_tags = await Tag.findAll({
+            where: { user_uid: req.user.user_uid },
+            attributes: ['tag_uid', 'name', 'user_uid']
         });
     } catch (error) {
         next(error);
@@ -51,12 +90,12 @@ tagController.getAll = async (req, res, next) => {
 tagController.getOne = async (req, res, next) => {
     let tag = null;
     try {
-        tag = await Tag.findOne({ 
-            where: { 
+        tag = await Tag.findOne({
+            where: {
                 tag_uid: req.params.tag_uid,
                 user_uid: req.user.user_uid
-             }, 
-            attributes: ['tag_uid', 'name', 'user_uid'] 
+            },
+            attributes: ['tag_uid', 'name', 'user_uid']
         });
         if (tag) {
             res.status(200).json({
@@ -64,7 +103,7 @@ tagController.getOne = async (req, res, next) => {
                 'Tag': tag
             })
         }
-        else{
+        else {
             res.status(404).json({
                 'message': 'no tag found'
             })
@@ -72,7 +111,7 @@ tagController.getOne = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-   
+
 
 }
 
