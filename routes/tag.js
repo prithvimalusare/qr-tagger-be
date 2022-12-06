@@ -5,6 +5,9 @@ const {authorizeToken} = require('../middlewares/authorization')
 
 router.post('/create',authorizeToken, tagCreateValidation ,tagControllers.create)
 
+router.get('/get/:tag_uid', authorizeToken, tagControllers.getOne)
+
+router.get('/get-all', authorizeToken, tagControllers.getAll)
 
 
 module.exports = router;
