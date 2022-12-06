@@ -1,29 +1,29 @@
 const jwt = require('jsonwebtoken')
 
 let createToken = (payload, secret, expiry) => {
-    return jwt.sign(payload, secret, expiry?{expiresIn: expiry}:null )
+    return jwt.sign(payload, secret, expiry? {expiresIn: expiry} : null )
 }
 
 let verifyToken = async (token, secret) => {
     let isValid;
     try {
-        await jwt.verify(token, secret);
-        isValid = true;
+        isValid = await jwt.verify(token, secret);
     } catch (error) {
         isValid = false;
     }
     return isValid;
 }
 
-
-module.exports = {
-    createToken, verifyToken
+let decodeToken = async (token, secret) => {
+    let decodedToken = null;
+    try {
+        decodedToken = await jwt.decode(token, secret)    
+    } catch (error) {
+        console.log(error)
+    }
+    return decodedToken
 }
 
-// , (err, payload)=>{
-//     if(err){ isValid = false }
-//     else{ isValid = true
-//     }
-//     console.log('reached here')
-//     return isValid
-// }
+module.exports = {
+    createToken, verifyToken, decodeToken
+}
