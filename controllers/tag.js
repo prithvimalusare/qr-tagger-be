@@ -1,19 +1,19 @@
-let {Tag} = require('../database/models')
+let { Tag } = require('../database/models')
 
 let tagController = {}
 
-tagController.create = async(req, res, next) => {
+tagController.create = async (req, res, next) => {
     const tag_name = req.body.name;
     let created_tag;
     try {
         created_tag = await Tag.create({
             name: tag_name,
-            user_uid : req.user.user_uid
+            user_uid: req.user.user_uid
         });
     } catch (error) {
         next(error);
     }
-    if(created_tag){
+    if (created_tag) {
         res.status(200).json({
             'message': 'Tag created successfully',
             'Tag': {
@@ -22,7 +22,30 @@ tagController.create = async(req, res, next) => {
             }
         })
     }
-    
+
+}
+
+tagController.getAll = async (req, res, next) => {
+    let all_tags = [];
+    try {
+        all_tags = await Tag.findAll({ 
+            where: { user_uid: req.user.user_uid }, 
+            attributes: ['tag_uid', 'name', 'user_uid'] 
+        });
+    } catch (error) {
+        next(error);
+    }
+    if (all_tags.length) {
+        res.status(200).json({
+            'message': 'Tags found',
+            'Tags': all_tags
+        })
+    } else {
+        res.status(404).json({
+            'message': 'no tags found'
+        })
+    }
+
 }
 
 module.exports = tagController
