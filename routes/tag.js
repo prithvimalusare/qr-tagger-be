@@ -1,9 +1,11 @@
 const router = require('express').Router()
 const {tagControllers} = require('../controllers');
-const {tagCreateValidation} = require('../middlewares/validation')
+const {tagCreateValidation, tagUpdateValidation} = require('../middlewares/validation')
 const {authorizeToken} = require('../middlewares/authorization')
 
 router.post('/create',authorizeToken, tagCreateValidation ,tagControllers.create)
+
+router.put('/update/:tag_uid', authorizeToken, tagUpdateValidation ,tagControllers.update)
 
 router.get('/get/:tag_uid', authorizeToken, tagControllers.getOne)
 

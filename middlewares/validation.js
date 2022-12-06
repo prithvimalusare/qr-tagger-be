@@ -57,4 +57,12 @@ tagCreateValidation = (req, res, next) => {
     }
 }
 
-module.exports = { registerValidaiton, loginValidaiton, tagCreateValidation };
+tagUpdateValidation = (req, res, next) => {
+    if (!req.body.name || validator.isEmpty(req.body.name)) {
+        sendError(req, res, next, 'name', 'und_empt')
+    } else {
+        next();
+    }
+}
+
+module.exports = { registerValidaiton, loginValidaiton, tagCreateValidation, tagUpdateValidation };
