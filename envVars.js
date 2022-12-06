@@ -1,5 +1,6 @@
 try {
-    require('dotenv').config();
+    let path = require('path')
+    require('dotenv').config({ path: path.resolve('/Users/macintoshhd/Documents/Personal/mlh-tagger/qr-tagger-be/.env') });
 } catch (error) {
     console.error('dotenv missing', error)
 }
