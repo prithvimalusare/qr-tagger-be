@@ -14,7 +14,7 @@ tagController.create = async (req, res, next) => {
         next(error);
     }
     if (created_tag) {
-        res.status(200).json({
+        res.status(201).json({
             'message': 'Tag created successfully',
             'Tag': {
                 "tag_uid": created_tag.tag_uid,
@@ -62,6 +62,48 @@ tagController.update = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+}
+
+tagController.delete = async (req, res, next) => {
+    let tag = null;
+    try {
+        tag = await Tag.findOne({
+            where: {
+                tag_uid: req.params.tag_uid,
+                user_uid: req.user.user_uid
+            },
+            attributes: ['tag_uid']
+        });
+        if (tag) {
+            
+            let deleted = await Tag.destroy({
+                where: {
+                    tag_uid: req.params.tag_uid,
+                    user_uid: req.user.user_uid
+                }
+            });
+            if (deleted) {
+                res.status(200).json({
+                    'message': 'Tag deleted',
+                    'tag_uid': req.params.tag_uid
+                })
+            } else {
+                res.status(404).json({
+                    'message': 'Tag not deleted',
+                    'tag_uid': req.params.tag_uid
+                })
+            }
+        }
+        else {
+            res.status(404).json({
+                'message': 'no tag found'
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+
+
 }
 
 tagController.getAll = async (req, res, next) => {
