@@ -48,4 +48,32 @@ tagController.getAll = async (req, res, next) => {
 
 }
 
+tagController.getOne = async (req, res, next) => {
+    let tag = null;
+    try {
+        tag = await Tag.findOne({ 
+            where: { 
+                tag_uid: req.params.tag_uid,
+                user_uid: req.user.user_uid
+             }, 
+            attributes: ['tag_uid', 'name', 'user_uid'] 
+        });
+        if (tag) {
+            res.status(200).json({
+                'message': 'Tag found',
+                'Tag': tag
+            })
+        }
+        else{
+            res.status(404).json({
+                'message': 'no tag found'
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+   
+
+}
+
 module.exports = tagController
