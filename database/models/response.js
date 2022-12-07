@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Tag extends Model {
+  class Response extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,37 +11,47 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Tag.belongsTo(models.User, {foreignKey:'user_uid',targetKey:'user_uid'});
-      Tag.hasMany(models.Response,{foreignKey:'tag_uid'})
-
+      Response.belongsTo(models.Tag,{foreignKey:'tag_uid',targetKey:'tag_uid'})
     }
   }
-  Tag.init({
-    tag_uid: {
+  Response.init({
+    response_uid: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
+    full_name: {
+      allowNull: false,
+      type: DataTypes.STRING
     },
-    user_uid: {
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    phone: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    message: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    tag_uid: {
       type: DataTypes.UUID,
       references: {
-        model: 'Users',
-        key: 'user_uid'
+        model: 'Tags',
+        key: 'tag_uid'
       }
-    }
+    },
   }, {
     sequelize,
-    modelName: 'Tag',
+    modelName: 'Response',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     deletedAt: 'deleted_at',
     paranoid: true,
     timestamps: true,
   });
-  return Tag;
+  return Response;
 };
