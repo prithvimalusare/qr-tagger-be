@@ -25,6 +25,13 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    user_uid: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Users',
+        key: 'user_uid'
+      }
     }
   }, {
     sequelize,
