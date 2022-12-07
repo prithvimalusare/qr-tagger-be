@@ -42,7 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Tags',
         key: 'tag_uid'
-      }
+      },
+      allowNull:false
     },
   }, {
     sequelize,

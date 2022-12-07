@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'user_uid'
-      }
+      },
+      allowNull:false
     }
   }, {
     sequelize,
