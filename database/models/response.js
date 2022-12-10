@@ -1,14 +1,9 @@
 'use strict';
-
-let crypto = require('crypto');
-
-const { SALT } = require('../../envVars') ;
-
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Response extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -16,50 +11,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Tag,{foreignKey:'user_uid'})
-    }
-    validatePassword(password){
-      return encryptPassword(password) === this.password
+      Response.belongsTo(models.Tag,{foreignKey:'tag_uid',targetKey:'tag_uid'})
     }
   }
-  User.init({
-    user_uid: {
+  Response.init({
+    response_uid: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
     full_name: {
-      type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      type: DataTypes.STRING
     },
     email: {
-      type: DataTypes.STRING,
       allowNull: false,
-      unique:true
+      type: DataTypes.STRING
     },
-    password: {
-      type: DataTypes.STRING(100),
+    phone: {
       allowNull: false,
-      set(value){
-        this.setDataValue('password', encryptPassword(value)  )
-      }
-    }
+      type: DataTypes.STRING
+    },
+    message: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    tag_uid: {
+      type: DataTypes.UUID,
+      references: {
+        model: 'Tags',
+        key: 'tag_uid'
+      },
+      allowNull:false
+    },
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'Response',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
     deletedAt: 'deleted_at',
     paranoid: true,
     timestamps: true,
-  },{
-    sequelize
   });
-  
-  return User;
+  return Response;
 };
-
-const encryptPassword = (password) =>{
-  return crypto.pbkdf2Sync(password, SALT, 1000, 64, `sha512`).toString(`hex`)
-}
