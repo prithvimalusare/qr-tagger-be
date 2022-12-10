@@ -18,7 +18,7 @@ tagController.create = async (req, res, next) => {
             message,
             tag_uid,
         })
-        
+
         const options = {
             to: tag.User.email,
             cc: '',
@@ -47,5 +47,33 @@ tagController.create = async (req, res, next) => {
     }
 }
 
+tagController.getAll = async (req, res, next) => {
+    try {
+
+        let tag_uid = req.params.tag_uid
+
+        let tag = await Tag.findOne({
+            where: { tag_uid }, 
+            attributes: {
+                exclude: ['created_at', 'updated_at', 'deleted_at', 'user_uid']
+            },
+            include: {
+                model: Response,
+                attributes: {
+                    exclude: ['created_at', 'updated_at', 'deleted_at', 'tag_uid']
+                }
+            }
+        });
+        if (!tag) { res.status(404).json({ 'message': 'tag not found for tag_uid: ' + tag_uid }) }
+
+
+        res.status(200).json({
+            message: 'Response recorded successfully',
+            Tag: tag
+        })
+    } catch (error) {
+        next(error);
+    }
+}
 
 module.exports = tagController
