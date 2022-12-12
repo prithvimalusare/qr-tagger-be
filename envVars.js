@@ -15,6 +15,7 @@ module.exports  = {
     'DB_DATABASE' : process.env['DB_DATABASE'] || 'db',
     'DB_HOST' : process.env['DB_HOST'] || '127.0.0.1',
     'DB_DIALECT' : process.env['DB_DIALECT'] || 'postgres',
+    'DB_CONN_STR' : process.env['DB_CONN_STR'] || '',
     'ACCESS_TOKEN_SECRET':process.env['ACCESS_TOKEN_SECRET'] || 'ACCESS_TOKEN_SECRET',
     'ACCESS_TOKEN_EXPIRY':process.env['ACCESS_TOKEN_EXPIRY'] || '1h',
     'GMAIL_CLIENT_SECRET':process.env['GMAIL_CLIENT_SECRET'] || 'GMAIL_CLIENT_SECRET',
