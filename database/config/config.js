@@ -1,25 +1,27 @@
-const {DB_USERNAME,DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD} = require('../../envVars')
-
+const {DB_USERNAME,DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_CONN_STR} = require('../../envVars');
 module.exports = {
   "development": {
-    "username": DB_USERNAME,
-    "password": DB_PASSWORD,
-    "database": DB_DATABASE,
-    "host": DB_HOST,
-    "dialect": DB_DIALECT
+    "url": DB_CONN_STR,
+    "dialect": DB_DIALECT,
+    "ssl": true,
+    "dialectOptions": {
+        "ssl": true
+    }
   },
   "test": {
-    "username": DB_USERNAME,
-    "password": DB_PASSWORD,
-    "database": DB_DATABASE,
-    "host": DB_HOST,
-    "dialect": DB_DIALECT
+    "url": DB_CONN_STR,
+    "dialect": DB_DIALECT,
+    "ssl": true,
+    "dialectOptions": {
+        "ssl": true
+    }
   },
   "production": {
-    "username": DB_USERNAME,
-    "password": DB_PASSWORD,
-    "database": DB_DATABASE,
-    "host": DB_HOST,
-    "dialect": DB_DIALECT
+    "url": DB_CONN_STR,
+    "dialect": DB_DIALECT,
+    "ssl": true,
+    "dialectOptions": {
+        "ssl": true
+    }
   }
 }
